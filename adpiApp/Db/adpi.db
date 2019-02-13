@@ -82,64 +82,11 @@ record( bo, "$(head):RESETw" )
 record( fanout, "$(head):MODEFO" )
 {
     field(LNK1, "$(head):MODESEL.PROC")
-    field(LNK2, "$(head):CLOCKSEL.PROC")
-    field(LNK3, "$(head):RATE.PROC")
-}
-
-record( mbbi, "$(head):RATE" )
-{
-    field(INP, "$(head):MODE")
-    field(SHFT, "0")
-    field(NOBT, "4")
-    field(DTYP, "Raw Soft Channel")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(THVL, "3")
-    field(FRVL, "4")
-    field(FVVL, "5")
-    field(SXVL, "6")
-    field(SVVL, "7")
-    field(EIVL, "8")
-    field(NIVL, "9")
-    field(TEVL, "10")
-    field(ELVL, "11")
-    field(TVVL, "12")
-    field(TTVL, "13")
-    field(FTVL, "14")
-    field(FFVL, "15")
-    field(ZRST, "Error")
-    field(ONST, "470")
-    field(TWST, "242")
-    field(THST, "123")
-    field(FRST, "62")
-    field(FVST, "50")
-    field(SXST, "39")
-    field(SVST, "33")
-    field(EIST, "19")
-    field(NIST, "17")
-    field(TEST, "16")
-    field(ELST, "12")
-    field(TVST, "10")
-    field(TTST, "8")
-    field(FTST, "6")
-    field(FFST, "4")
-}
-
-record( mbbi, "$(head):CLOCKSEL" )
-{
-    field(INP, "$(head):MODE")
-    field(SHFT, "6")
-    field(NOBT, "2")
-    field(DTYP, "Raw Soft Channel")
-    field(ZRVL, "0")
-    field(ONVL, "1")
-    field(TWVL, "2")
-    field(THVL, "3")
-    field(ZRST, "internal-1")
-    field(ONST, "internal-2")
-    field(TWST, "external-1")
-    field(THST, "external-2")
+    field(LNK2, "$(head):PSW.PROC")
+    field(LNK3, "$(head):AMPCM.PROC")
+    field(LNK4, "$(head):CLOCKSEL.PROC")
+    field(LNK5, "$(head):CHOP.PROC")
+    field(LNK6, "$(head):RATE.PROC")
 }
 
 record( mbbi, "$(head):MODESEL" )
@@ -166,15 +113,145 @@ record( mbbi, "$(head):MODESEL" )
     field(SVST, "cal_sys_full")
 }
 
-record( fanout, "$(head):CONFIGFO" )
+record( mbbi, "$(head):PSW" )
 {
-    field(LNK1, "$(head):CODEMODE.PROC")
-    field(LNK2, "$(head):GAIN.PROC")
-    field(LNK3, "$(head):VREF")
-    field(LNK4, "$(head):CHSEL")
+    field(INP, "$(head):MODE")
+    field(SHFT, "12")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Close")
+    field(ONST, "Open")
 }
 
-record( mbbi, "$(head):CODEMODE" )
+record( mbbi, "$(head):AMPCM" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "9")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Disable")
+    field(ONST, "Enable")
+}
+
+record( mbbi, "$(head):CLOCKSEL" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "6")
+    field(NOBT, "2")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "internal-1")
+    field(ONST, "internal-2")
+    field(TWST, "external-1")
+    field(THST, "external-2")
+}
+
+record( mbbi, "$(head):CHOP" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "4")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Enable")
+    field(ONST, "Disable")
+}
+
+record( mbbi, "$(head):RATE" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "0")
+    field(NOBT, "4")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(NIVL, "9")
+    field(TEVL, "10")
+    field(ELVL, "11")
+    field(TVVL, "12")
+    field(TTVL, "13")
+    field(FTVL, "14")
+    field(FFVL, "15")
+    field(ZRST, "Error")
+    field(ONST, "500")
+    field(TWST, "250")
+    field(THST, "125")
+    field(FRST, "62")
+    field(FVST, "50")
+    field(SXST, "39")
+    field(SVST, "33")
+    field(EIST, "19")
+    field(NIST, "17")
+    field(TEST, "16")
+    field(ELST, "12")
+    field(TVST, "10")
+    field(TTST, "8")
+    field(FTST, "6")
+    field(FFST, "4")
+}
+
+record( fanout, "$(head):CONFIGFO" )
+{
+    field(LNK1, "$(head):VBIAS.PROC")
+    field(LNK2, "$(head):BURNOUT.PROC")
+    field(LNK3, "$(head):POLAR.PROC")
+    field(LNK4, "$(head):BOOST.PROC")
+    field(LNK5, "$(head):GAIN.PROC")
+    field(LNK6, "$(head):CONFIGFO2.PROC")
+}
+
+record( fanout, "$(head):CONFIGFO2" )
+{
+    field(LNK1, "$(head):VREF.PROC")
+    field(LNK2, "$(head):REFDET.PROC")
+    field(LNK3, "$(head):BUFFER.PROC")
+    field(LNK4, "$(head):CHSEL.PROC")
+}
+
+record( mbbi, "$(head):VBIAS" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "14")
+    field(NOBT, "2")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "Disable")
+    field(ONST, "AIN1")
+    field(TWST, "AIN2")
+    field(THST, "AIN3")
+}
+
+record( mbbi, "$(head):BURNOUT" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "13")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Disable")
+    field(ONST, "Enable")
+}
+
+record( mbbi, "$(head):POLAR" )
 {
     field(INP, "$(head):CONFIG")
     field(SHFT, "12")
@@ -186,10 +263,22 @@ record( mbbi, "$(head):CODEMODE" )
     field(ONST, "unipolar")
 }
 
+record( mbbi, "$(head):BOOST" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "11")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Disable")
+    field(ONST, "Enable")
+}
+
 record( mbbi, "$(head):GAIN" )
 {
     field(INP, "$(head):CONFIG")
-    field(SHFT, "10")
+    field(SHFT, "8")
     field(NOBT, "3")
     field(DTYP, "Raw Soft Channel")
     field(ZRVL, "0")
@@ -213,7 +302,7 @@ record( mbbi, "$(head):GAIN" )
 record( mbbi, "$(head):VREF" )
 {
     field(INP, "$(head):CONFIG")
-    field(SHFT, "7")
+    field(SHFT, "6")
     field(NOBT, "2")
     field(DTYP, "Raw Soft Channel")
     field(ZRVL, "0")
@@ -224,6 +313,30 @@ record( mbbi, "$(head):VREF" )
     field(ONST, "external-2")
     field(TWST, "internal")
     field(THST, "reserved")
+}
+
+record( mbbi, "$(head):REFDET" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "5")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Disable")
+    field(ONST, "Enable")
+}
+
+record( mbbi, "$(head):BUFFER" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "4")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "Disable")
+    field(ONST, "Enable")
 }
 
 record( mbbi, "$(head):CHSEL" )
@@ -267,18 +380,22 @@ record( mbbi, "$(head):CHSEL" )
 }
 record( ai, "$(head):V1" )
 {
+    field(EGU,  "mV")
 }
 
 record( ai, "$(head):V2" )
 {
+    field(EGU,  "mV")
 }
 
 record( ai, "$(head):V3" )
 {
+    field(EGU,  "mV")
 }
 
 record( ai, "$(head):V4" )
 {
+    field(EGU,  "mV")
 }
 
 record( longout, "$(head):NUMCHS" )
@@ -309,4 +426,5 @@ record( longout, "$(head):SETRATE" )
     field(LOPR, "4")
     field(VAL,  "500")
     field(PINI, "YES")
+    field(EGU,  "Hz")
 }

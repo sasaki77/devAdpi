@@ -2,7 +2,7 @@ program sncAdpi /* Program Name */
 
 %%#include "sncAdpi.h"
 
-/* monitor ch */
+/* read ch */
 unsigned long  status;
 unsigned short mode;
 unsigned short config;
@@ -13,28 +13,23 @@ assign mode   to "{head}:MODE";
 assign config to "{head}:CONFIG";
 assign data   to "{head}:DATA";
 
-monitor status;
-monitor mode;
-monitor config;
-monitor data;
-
 /* write ch */
-unsigned long update_status;
-unsigned short update_mode;
 unsigned short mode_w;
-unsigned short update_config;
 unsigned short config_w;
-unsigned long update_data;
+unsigned long  update_status;
+unsigned short update_mode;
+unsigned short update_config;
+unsigned long  update_data;
 float v1;
 float v2;
 float v3;
 float v4;
 
+assign mode_w        to "{head}:MODEw";
+assign config_w      to "{head}:CONFIGw";
 assign update_status to "{head}:STATUS.PROC";
 assign update_mode   to "{head}:MODE.PROC";
-assign mode_w        to "{head}:MODEw";
 assign update_config to "{head}:CONFIG.PROC";
-assign config_w      to "{head}:CONFIGw";
 assign update_data   to "{head}:DATA.PROC";
 assign v1            to "{head}:V1";
 assign v2            to "{head}:V2";
@@ -74,23 +69,14 @@ ss ss1 {
 	    mode_w   = ADPI_MODE_POWERDOWN | ADPI_PSW_DSB | ADPI_AMPCM_DSB |
 		       ADPI_CLK_INT1 | ADPI_CHOP_ENB | rate_flag;
 
+	    pvPut(config_w);
+	    pvPut(mode_w);
+
 	    gain_scale = ADPI_VREF /  0x800000 * gain ;
-	    measure_delay = 2.0 * 1.0 / rate;
+	    measure_delay = 2.0 * 1.0 / rate + 0.01;
 	    //printf("measure_delay = %.9f\n",measure_delay);
 	    //printf("gain_scale = %.9f\n",gain_scale);
-	} state init_var
-    }
-
-    state init_var {
-        entry {
-            //printf("sncAdpi: Init Variable\n");
-	    pvPut(update_config);
-	    pvPut(update_mode);
-        }
-        when ( delay(0.01) ) {
-            //printf("sncAdpi: CONFIG = %u\n", config);
-            //printf("sncAdpi: MODE = %u\n", mode);
-        } state init_measure
+	} state init_measure
     }
 
     state init_measure {
@@ -98,33 +84,33 @@ ss ss1 {
             //printf("sncAdpi: Init Measure\n");
 	    config_w = (config_w & 0xfff8) | (ch & 0x0007);
 	    mode_w = (mode_w & 0x1fff) | ADPI_MODE_SINGLE;
-	    pvPut(config_w);
-	    pvPut(mode_w);
-	    measure_delay = 0.01;
+	    pvPut(config_w, SYNC);
+	    pvPut(mode_w, SYNC);
+
+	    pvPut(update_config);
+	    pvPut(update_mode);
         }
         when ( delay(measure_delay) ) {
-	    pvPut(update_status);
+	    pvPut(update_status, SYNC);
+	    pvGet(status);
         } state wait_measure
     }
 
     state wait_measure {
 	when ( !(status & ADPI_STS_RDY) ) {
             //printf("sncAdpi: Measure complete\n");
-	    pvPut(update_data);
-	} state wait_measure2
+	    pvPut(update_data, SYNC);
+	} state measure
         when ( delay(measure_delay) ) {
             //printf("sncAdpi: Measure wait\n");
-	    pvPut(update_status);
+	    pvPut(update_status, SYNC);
+	    pvGet(status);
         } state wait_measure 
-    }
-
-    state wait_measure2 {
-        when ( delay(0.01)) {
-        } state measure
     }
 
     state measure {
         entry {
+	    pvGet(data);
             if(ch == ADPI_CH_1) {
 	        v1 = gain_scale * (data - ADPI_BI_OFFSET);
 	        //printf("v%u = %f\n",ch,v1);
@@ -145,9 +131,9 @@ ss ss1 {
 	        printf("measure error on ch%u\n",ch);
 	    }
         }
-        when ( delay(0.01) ) {
+        when () {
             //printf("sncAdpi: End\n");
 	    ch = (ch >= (num_chs-1))? 0 : ch+1;
-        } state init_var
+        } state init_measure
     }
 }

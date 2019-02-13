@@ -5,7 +5,6 @@ program sncAdpi /* Program Name */
 unsigned int getGainFlag(unsigned short gain)
 {
     if( gain == 1 ){
-	printf("gain is set\n");
         return ADPI_GAIN_1;
     }else if( gain == 2 ){
         return ADPI_GAIN_2;
@@ -28,6 +27,45 @@ unsigned int getGainFlag(unsigned short gain)
     }
 }
 
+unsigned int getRateFlag(unsigned int rate)
+{
+    if( rate == 500 ){
+        return ADPI_RATE_500;
+    }else if( rate == 250 ){
+        return ADPI_RATE_250;
+    }else if( rate == 125 ){
+        return ADPI_RATE_125;
+    }else if( rate == 62 ){
+        return ADPI_RATE_62;
+    }else if( rate == 50 ){
+        return ADPI_RATE_50;
+    }else if( rate == 39 ){
+        return ADPI_RATE_39;
+    }else if( rate == 33 ){
+        return ADPI_RATE_33;
+    }else if( rate == 19 ){
+        return ADPI_RATE_19;
+    }else if( rate == 17 ){
+        return ADPI_RATE_17;
+    }else if( rate == 16 ){
+        return ADPI_RATE_16;
+    }else if( rate == 12 ){
+        return ADPI_RATE_12;
+    }else if( rate == 10 ){
+        return ADPI_RATE_10;
+    }else if( rate == 8 ){
+        return ADPI_RATE_8;
+    }else if( rate == 6 ){
+        return ADPI_RATE_6;
+    }else if( rate == 4 ){
+        return ADPI_RATE_4;
+    }else{
+	printf("rate = %u is not supported.\n", rate);
+	printf("Check rate setting\n");
+        return ADPI_RATE_4;
+    }
+}
+
 /* read ch */
 unsigned long  status;
 unsigned short mode;
@@ -35,6 +73,7 @@ unsigned short config;
 unsigned long  data;
 unsigned short num_chs;
 unsigned short gain;
+unsigned int   rate;
 
 assign status  to "{head}:STATUS";
 assign mode    to "{head}:MODE";
@@ -42,6 +81,7 @@ assign config  to "{head}:CONFIG";
 assign data    to "{head}:DATA";
 assign num_chs to "{head}:NUMCHS";
 assign gain    to "{head}:SETGAIN";
+assign rate    to "{head}:SETRATE";
 
 /* write ch */
 unsigned short mode_w;
@@ -73,9 +113,7 @@ float measure_delay;
 unsigned int gain_flag;
 float gain_scale;
 
-/* [TODO] make rate mutable */
-int   rate = 470;
-int   rate_flag = ADPI_RATE_470;
+unsigned int rate_flag;
 
 /* State Set */
 ss ss1 {
@@ -89,8 +127,10 @@ ss ss1 {
 
 	    pvGet(num_chs);
 	    pvGet(gain);
+	    pvGet(rate);
 
 	    gain_flag = getGainFlag(gain);
+	    rate_flag = getRateFlag(rate);
 
 	    config_w = ADPI_VBIAS_DSB | ADPI_BO_DSB | ADPI_POLAR_BI | 
 		       gain_flag | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB | 

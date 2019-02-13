@@ -22,9 +22,9 @@
 #define ADPI_CHOP_DSB          0x0010
 #define ADPI_CHOP_ENB          0x0000
 
-#define ADPI_RATE_470          0x0001
-#define ADPI_RATE_242          0x0002
-#define ADPI_RATE_123          0x0003
+#define ADPI_RATE_500          0x0001
+#define ADPI_RATE_250          0x0002
+#define ADPI_RATE_125          0x0003
 #define ADPI_RATE_62           0x0004
 #define ADPI_RATE_50           0x0005
 #define ADPI_RATE_39           0x0006

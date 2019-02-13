@@ -300,3 +300,13 @@ record( longout, "$(head):SETGAIN" )
     field(VAL,  "1")
     field(PINI, "YES")
 }
+
+record( longout, "$(head):SETRATE" )
+{
+    field(DRVH, "500")
+    field(DRVL, "4")
+    field(HOPR, "500")
+    field(LOPR, "4")
+    field(VAL,  "500")
+    field(PINI, "YES")
+}

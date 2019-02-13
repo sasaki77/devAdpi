@@ -1,0 +1,282 @@
+record( longin, "$(head):STATUS" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readStatus $(port)")
+    field(PINI, "YES")
+}
+
+record( longin, "$(head):MODE" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readMode $(port)")
+    field(PINI, "YES")
+    field(FLNK, "$(head):MODEFO.PROC")
+}
+
+record( longin, "$(head):CONFIG" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readConfig $(port)")
+    field(FLNK, "$(head):CONFIGFO.PROC")
+}
+
+record( longin, "$(head):DATA" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readData $(port)")
+    field(PINI, "YES")
+}
+
+record( longin, "$(head):ID" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readID $(port)")
+    field(PINI, "YES")
+}
+
+record( longin, "$(head):IO" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readIO $(port)")
+    field(PINI, "YES")
+}
+
+record( longin, "$(head):OFFSET" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readOffset $(port)")
+    field(PINI, "YES")
+}
+
+record( longin, "$(head):FULLSCALE" )
+{
+    field(DTYP, "stream")
+    field(INP,  "@ad7794.proto readFullscale $(port)")
+    field(PINI, "YES")
+}
+
+record( longout, "$(head):MODEw" )
+{
+    field(DTYP, "stream")
+    field(OUT,  "@ad7794.proto writeMode $(port)")
+}
+
+record( longout, "$(head):CONFIGw" )
+{
+    field(DTYP, "stream")
+    field(OUT,  "@ad7794.proto writeConfig $(port)")
+}
+
+record( longout, "$(head):IOw" )
+{
+    field(DTYP, "stream")
+    field(OUT,  "@ad7794.proto writeIO $(port)")
+}
+
+record( bo, "$(head):RESETw" )
+{
+    field(DTYP, "stream")
+    field(OUT,  "@ad7794.proto writeReset $(port)")
+}
+
+record( fanout, "$(head):MODEFO" )
+{
+    field(LNK1, "$(head):MODESEL.PROC")
+    field(LNK2, "$(head):CLOCKSEL.PROC")
+    field(LNK3, "$(head):RATE.PROC")
+}
+
+record( mbbi, "$(head):RATE" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "0")
+    field(NOBT, "4")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(NIVL, "9")
+    field(TEVL, "10")
+    field(ELVL, "11")
+    field(TVVL, "12")
+    field(TTVL, "13")
+    field(FTVL, "14")
+    field(FFVL, "15")
+    field(ZRST, "Error")
+    field(ONST, "470")
+    field(TWST, "242")
+    field(THST, "123")
+    field(FRST, "62")
+    field(FVST, "50")
+    field(SXST, "39")
+    field(SVST, "33")
+    field(EIST, "19")
+    field(NIST, "17")
+    field(TEST, "16")
+    field(ELST, "12")
+    field(TVST, "10")
+    field(TTST, "8")
+    field(FTST, "6")
+    field(FFST, "4")
+}
+
+record( mbbi, "$(head):CLOCKSEL" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "6")
+    field(NOBT, "2")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "internal-1")
+    field(ONST, "internal-2")
+    field(TWST, "external-1")
+    field(THST, "external-2")
+}
+
+record( mbbi, "$(head):MODESEL" )
+{
+    field(INP, "$(head):MODE")
+    field(SHFT, "13")
+    field(NOBT, "3")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(ZRST, "continuous")
+    field(ONST, "single")
+    field(TWST, "idle")
+    field(THST, "powerdown")
+    field(FRST, "cal_int_zero")
+    field(FVST, "cal_int_full")
+    field(SXST, "cal_sys_zero")
+    field(SVST, "cal_sys_full")
+}
+
+record( fanout, "$(head):CONFIGFO" )
+{
+    field(LNK1, "$(head):CODEMODE.PROC")
+    field(LNK2, "$(head):GAIN.PROC")
+    field(LNK3, "$(head):VREF")
+    field(LNK4, "$(head):CHSEL")
+}
+
+record( mbbi, "$(head):CODEMODE" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "12")
+    field(NOBT, "1")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(ZRST, "bipolar")
+    field(ONST, "unipolar")
+}
+
+record( mbbi, "$(head):GAIN" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "10")
+    field(NOBT, "3")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(ZRST, "1")
+    field(ONST, "2")
+    field(TWST, "4")
+    field(THST, "8")
+    field(FRST, "16")
+    field(FVST, "32")
+    field(SXST, "64")
+    field(SVST, "128")
+}
+
+record( mbbi, "$(head):VREF" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "7")
+    field(NOBT, "2")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "external-1")
+    field(ONST, "external-2")
+    field(TWST, "internal")
+    field(THST, "reserved")
+}
+
+record( mbbi, "$(head):CHSEL" )
+{
+    field(INP, "$(head):CONFIG")
+    field(SHFT, "0")
+    field(NOBT, "4")
+    field(DTYP, "Raw Soft Channel")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(SXVL, "6")
+    field(SVVL, "7")
+    field(EIVL, "8")
+    field(NIVL, "9")
+    field(TEVL, "10")
+    field(ELVL, "11")
+    field(TVVL, "12")
+    field(TTVL, "13")
+    field(FTVL, "14")
+    field(FFVL, "15")
+    field(ZRST, "CH1")
+    field(ONST, "CH2")
+    field(TWST, "CH3")
+    field(THST, "CH4")
+    field(FRST, "CH5")
+    field(FVST, "CH6")
+    field(SXST, "thermal")
+    field(SVST, "AVDD")
+    field(EIST, "CH1-")
+    field(NIST, "reserved")
+    field(TEST, "reserved")
+    field(ELST, "reserved")
+    field(TVST, "reserved")
+    field(TTST, "reserved")
+    field(FTST, "reserved")
+    field(FFST, "reserved")
+}
+record( ai, "$(head):V1" )
+{
+}
+
+record( ai, "$(head):V2" )
+{
+}
+
+record( ai, "$(head):V3" )
+{
+}
+
+record( ai, "$(head):V4" )
+{
+}

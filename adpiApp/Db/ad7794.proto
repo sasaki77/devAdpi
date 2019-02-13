@@ -1,0 +1,89 @@
+# ad7794 protocol file
+# 'communications': {'address': 0x00, 'byte': 1},
+# 'status':         {'address': 0x00, 'byte': 1},
+# 'mode':           {'address': 0x08, 'byte': 2},
+# 'configuration':  {'address': 0x10, 'byte': 2},
+# 'data':           {'address': 0x18, 'byte': 3},
+# 'id':             {'address': 0x20, 'byte': 1},
+# 'io':             {'address': 0x28, 'byte': 1},
+# 'offset':         {'address': 0x30, 'byte': 3},
+# 'fullscale':      {'address': 0x38, 'byte': 3},
+
+Terminator="";
+LockTimeout  = 500;
+ReplyTimeout = 100;
+ReadTimeout  = 100;
+WriteTimeout = 100;
+ExtraInput = Error;
+
+readStatus {
+    MaxInput = 1;
+    out 0x40;
+    in  "%01r";
+}
+
+readMode {
+    MaxInput = 2;
+    out 0x48;
+    in  "%02r";
+}
+
+readConfig {
+    MaxInput = 2;
+    out 0x50;
+    in  "%02r";
+}
+
+readData {
+    MaxInput = 3;
+    out 0x58;
+    in  "%03r";
+}
+
+readID {
+    MaxInput = 1;
+    out 0x60;
+    in  "%01r";
+}
+
+readIO {
+    MaxInput = 1;
+    out 0x68;
+    in  "%01r";
+}
+
+readOffset {
+    MaxInput = 3;
+    out 0x70;
+    in  "%03r";
+}
+
+readFullscale {
+    MaxInput = 3;
+    out 0x78;
+    in  "%03r";
+}
+
+writeMode{
+    out 0x08,"%.2r";
+}
+
+writeConfig{
+    out 0x10,"%.2r";
+}
+
+writeIO{
+    out 0x28,"%.1r";
+}
+
+writeOffset{
+    out 0x30,"%.3r";
+}
+
+writeFullscale{
+    out 0x38,"%.3r";
+}
+
+writeReset{
+    out 0xff,0xff,0xff,0xff,0xff,0xff;
+}

@@ -2,18 +2,46 @@ program sncAdpi /* Program Name */
 
 %%#include "sncAdpi.h"
 
+unsigned int getGainFlag(unsigned short gain)
+{
+    if( gain == 1 ){
+	printf("gain is set\n");
+        return ADPI_GAIN_1;
+    }else if( gain == 2 ){
+        return ADPI_GAIN_2;
+    }else if( gain == 4 ){
+        return ADPI_GAIN_4;
+    }else if( gain == 8 ){
+        return ADPI_GAIN_8;
+    }else if( gain == 16 ){
+        return ADPI_GAIN_16;
+    }else if( gain == 32 ){
+        return ADPI_GAIN_32;
+    }else if( gain == 64 ){
+        return ADPI_GAIN_64;
+    }else if( gain == 128 ){
+        return ADPI_GAIN_128;
+    }else{
+	printf("gain = %u is not supported.\n", gain);
+	printf("Check gain setting\n");
+        return ADPI_GAIN_1;
+    }
+}
+
 /* read ch */
 unsigned long  status;
 unsigned short mode;
 unsigned short config;
 unsigned long  data;
 unsigned short num_chs;
+unsigned short gain;
 
-assign status to "{head}:STATUS";
-assign mode   to "{head}:MODE";
-assign config to "{head}:CONFIG";
-assign data   to "{head}:DATA";
+assign status  to "{head}:STATUS";
+assign mode    to "{head}:MODE";
+assign config  to "{head}:CONFIG";
+assign data    to "{head}:DATA";
 assign num_chs to "{head}:NUMCHS";
+assign gain    to "{head}:SETGAIN";
 
 /* write ch */
 unsigned short mode_w;
@@ -42,9 +70,7 @@ assign v4            to "{head}:V4";
 short ch;
 float measure_delay;
 
-/* [TODO] make gain mutable */
-int   gain = 1;
-int   gain_flag = ADPI_GAIN_1;
+unsigned int gain_flag;
 float gain_scale;
 
 /* [TODO] make rate mutable */
@@ -62,6 +88,9 @@ ss ss1 {
 	    update_status = 1;
 
 	    pvGet(num_chs);
+	    pvGet(gain);
+
+	    gain_flag = getGainFlag(gain);
 
 	    config_w = ADPI_VBIAS_DSB | ADPI_BO_DSB | ADPI_POLAR_BI | 
 		       gain_flag | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB | 
@@ -73,7 +102,7 @@ ss ss1 {
 	    pvPut(config_w);
 	    pvPut(mode_w);
 
-	    gain_scale = ADPI_VREF /  0x800000 * gain ;
+	    gain_scale = ADPI_VREF / 0x800000 * gain ;
 	    measure_delay = 2.0 * 1.0 / rate + 0.01;
 	    //printf("measure_delay = %.9f\n",measure_delay);
 	    //printf("gain_scale = %.9f\n",gain_scale);

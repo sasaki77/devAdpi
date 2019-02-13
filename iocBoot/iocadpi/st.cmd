@@ -28,6 +28,11 @@ iocInit
 #seq sncxxx,"user=pi"
 
 ## Set sequence parameters
-dbpf ET_SASAKI:NUMCHS 2
+### Number of channels to use
+dbpf ET_SASAKI:NUMCHS 4
+
+### Gain setting. Available gain is following
+### 1, 2, 4, 8, 16, 32, 64, 128
+dbpf ET_SASAKI:SETGAIN 1
 
 seq sncAdpi,"head=ET_SASAKI"

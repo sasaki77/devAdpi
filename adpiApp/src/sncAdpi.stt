@@ -72,7 +72,7 @@ ss ss1 {
 		       ADPI_BUF_DSB;
 
 	    mode_w   = ADPI_MODE_POWERDOWN | ADPI_PSW_DSB | ADPI_AMPCM_DSB |
-		       ADPI_CLK_INT1 | ADPI_CHOP_DSB | rate_flag;
+		       ADPI_CLK_INT1 | ADPI_CHOP_ENB | rate_flag;
 
 	    gain_scale = ADPI_VREF /  0x800000 * gain ;
 	    measure_delay = 2.0 * 1.0 / rate;

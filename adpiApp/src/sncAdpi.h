@@ -19,8 +19,8 @@
 #define ADPI_CLK_EXT1          0x0080
 #define ADPI_CLK_EXT2          0x00c0
 
-#define ADPI_CHOP_DSB          0x0000
-#define ADPI_CHOP_ENB          0x0010
+#define ADPI_CHOP_DSB          0x0010
+#define ADPI_CHOP_ENB          0x0000
 
 #define ADPI_RATE_470          0x0001
 #define ADPI_RATE_242          0x0002

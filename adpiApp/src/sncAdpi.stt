@@ -7,11 +7,13 @@ unsigned long  status;
 unsigned short mode;
 unsigned short config;
 unsigned long  data;
+unsigned short num_chs;
 
 assign status to "{head}:STATUS";
 assign mode   to "{head}:MODE";
 assign config to "{head}:CONFIG";
 assign data   to "{head}:DATA";
+assign num_chs to "{head}:NUMCHS";
 
 /* write ch */
 unsigned short mode_w;
@@ -49,9 +51,6 @@ float gain_scale;
 int   rate = 470;
 int   rate_flag = ADPI_RATE_470;
 
-/* [TODO] make num_chs mutable */
-int num_chs = 4;
-
 /* State Set */
 ss ss1 {
     state init {
@@ -61,6 +60,8 @@ ss ss1 {
 	    update_mode   = 1;
 	    update_data   = 1;
 	    update_status = 1;
+
+	    pvGet(num_chs);
 
 	    config_w = ADPI_VBIAS_DSB | ADPI_BO_DSB | ADPI_POLAR_BI | 
 		       gain_flag | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB | 

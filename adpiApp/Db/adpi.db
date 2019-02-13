@@ -280,3 +280,13 @@ record( ai, "$(head):V3" )
 record( ai, "$(head):V4" )
 {
 }
+
+record( longout, "$(head):NUMCHS" )
+{
+    field(DRVH, "4")
+    field(DRVL, "1")
+    field(HOPR, "4")
+    field(LOPR, "1")
+    field(VAL,  "4")
+    field(PINI, "YES")
+}

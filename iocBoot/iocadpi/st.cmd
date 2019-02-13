@@ -26,4 +26,8 @@ iocInit
 
 ## Start any sequence programs
 #seq sncxxx,"user=pi"
+
+## Set sequence parameters
+dbpf ET_SASAKI:NUMCHS 2
+
 seq sncAdpi,"head=ET_SASAKI"

@@ -37,6 +37,6 @@ dbpf ET_SASAKI:SETGAIN 1
 
 ### Rate setting. Available rate is following
 ### 500, 250, 125, 62, 50, 39, 33, 19, 17, 16, 12, 10, 8 ,6, 4
-dbpf ET_SASAKI:SETRATE 50
+dbpf ET_SASAKI:SETRATE 500
 
 seq sncAdpi,"head=ET_SASAKI"

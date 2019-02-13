@@ -182,19 +182,19 @@ ss ss1 {
         entry {
 	    pvGet(data);
             if(ch == ADPI_CH_1) {
-	        v1 = gain_scale * (data - ADPI_BI_OFFSET);
+	        v1 = gain_scale * (long)(data - ADPI_BI_OFFSET);
 	        //printf("v%u = %f\n",ch,v1);
 	        pvPut(v1);
 	    }else if(ch == ADPI_CH_2){
-	        v2 = gain_scale * (data - ADPI_BI_OFFSET);
+	        v2 = gain_scale * (long)(data - ADPI_BI_OFFSET);
 	        //printf("v%u = %f\n",ch,v2);
 	        pvPut(v2);
 	    }else if(ch == ADPI_CH_3){
-	        v3 = gain_scale * (data - ADPI_BI_OFFSET);
+	        v3 = gain_scale * (long)(data - ADPI_BI_OFFSET);
 	        //printf("v%u = %f\n",ch,v3);
 	        pvPut(v3);
 	    }else if(ch == ADPI_CH_4){
-	        v4 = gain_scale * (data - ADPI_BI_OFFSET);
+	        v4 = gain_scale * (long)(data - ADPI_BI_OFFSET);
 	        //printf("v%u = %f\n",ch,v4);
 	        pvPut(v4);
 	    }else{

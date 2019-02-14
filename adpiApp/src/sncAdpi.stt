@@ -24,40 +24,79 @@ unsigned int getGainFlag(unsigned short gain_index)
     }
 }
 
-unsigned int getRateFlag(unsigned int rate)
+unsigned int getRate(unsigned int rate_index)
 {
-    if( rate == 500 ){
+    if( rate_index == 1 ){
+        return 500;
+    }else if( rate_index == 2 ){
+        return 250;
+    }else if( rate_index == 3 ){
+        return 125;
+    }else if( rate_index == 4 ){
+        return 62;
+    }else if( rate_index == 5 ){
+        return 50;
+    }else if( rate_index == 6 ){
+        return 39;
+    }else if( rate_index == 7 ){
+        return 33;
+    }else if( rate_index == 8 ){
+        return 19;
+    }else if( rate_index == 9 ){
+        return 17;
+    }else if( rate_index == 10 ){
+        return 16;
+    }else if( rate_index == 11 ){
+        return 12;
+    }else if( rate_index == 12 ){
+        return 10;
+    }else if( rate_index == 13 ){
+        return 8;
+    }else if( rate_index == 14 ){
+        return 6;
+    }else if( rate_index == 15 ){
+        return 4;
+    }else{
+	printf("rate_index = %u is not supported.\n", rate_index);
+	printf("Check rate setting\n");
+        return 4;
+    }
+}
+
+unsigned int getRateFlag(unsigned int rate_index)
+{
+    if( rate_index == 1 ){
         return ADPI_RATE_500;
-    }else if( rate == 250 ){
+    }else if( rate_index == 2 ){
         return ADPI_RATE_250;
-    }else if( rate == 125 ){
+    }else if( rate_index == 3 ){
         return ADPI_RATE_125;
-    }else if( rate == 62 ){
+    }else if( rate_index == 4 ){
         return ADPI_RATE_62;
-    }else if( rate == 50 ){
+    }else if( rate_index == 5 ){
         return ADPI_RATE_50;
-    }else if( rate == 39 ){
+    }else if( rate_index == 6 ){
         return ADPI_RATE_39;
-    }else if( rate == 33 ){
+    }else if( rate_index == 7 ){
         return ADPI_RATE_33;
-    }else if( rate == 19 ){
+    }else if( rate_index == 8 ){
         return ADPI_RATE_19;
-    }else if( rate == 17 ){
+    }else if( rate_index == 9 ){
         return ADPI_RATE_17;
-    }else if( rate == 16 ){
+    }else if( rate_index == 10 ){
         return ADPI_RATE_16;
-    }else if( rate == 12 ){
+    }else if( rate_index == 11 ){
         return ADPI_RATE_12;
-    }else if( rate == 10 ){
+    }else if( rate_index == 12 ){
         return ADPI_RATE_10;
-    }else if( rate == 8 ){
+    }else if( rate_index == 13 ){
         return ADPI_RATE_8;
-    }else if( rate == 6 ){
+    }else if( rate_index == 14 ){
         return ADPI_RATE_6;
-    }else if( rate == 4 ){
+    }else if( rate_index == 15 ){
         return ADPI_RATE_4;
     }else{
-	printf("rate = %u is not supported.\n", rate);
+	printf("rate_index = %u is not supported.\n", rate_index);
 	printf("Check rate setting\n");
         return ADPI_RATE_4;
     }
@@ -70,6 +109,7 @@ unsigned short config;
 unsigned long  data;
 unsigned short num_chs;
 unsigned short gain_index[4];
+unsigned int   rate_index;
 unsigned int   rate;
 
 assign status        to "{head}:STATUS";
@@ -81,7 +121,7 @@ assign gain_index[0] to "{head}:SETGAIN1";
 assign gain_index[1] to "{head}:SETGAIN2";
 assign gain_index[2] to "{head}:SETGAIN3";
 assign gain_index[3] to "{head}:SETGAIN4";
-assign rate          to "{head}:SETRATE";
+assign rate_index    to "{head}:SETRATE";
 
 /* write ch */
 unsigned short mode_w;
@@ -124,9 +164,10 @@ ss ss1 {
 	    update_status = 1;
 
 	    pvGet(num_chs);
-	    pvGet(rate);
+	    pvGet(rate_index);
 
-	    rate_flag = getRateFlag(rate);
+	    rate      = getRate(rate_index);
+	    rate_flag = getRateFlag(rate_index);
 
 	    config_w = ADPI_VBIAS_DSB | ADPI_BO_DSB | ADPI_POLAR_BI | 
 		       ADPI_GAIN_1 | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB |

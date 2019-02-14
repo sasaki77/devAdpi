@@ -2,26 +2,23 @@ program sncAdpi /* Program Name */
 
 %%#include "sncAdpi.h"
 
-unsigned int getGainFlag(unsigned short gain)
+unsigned int getGain(unsigned short gain_index)
 {
-    if( gain == 1 ){
-        return ADPI_GAIN_1;
-    }else if( gain == 2 ){
-        return ADPI_GAIN_2;
-    }else if( gain == 4 ){
-        return ADPI_GAIN_4;
-    }else if( gain == 8 ){
-        return ADPI_GAIN_8;
-    }else if( gain == 16 ){
-        return ADPI_GAIN_16;
-    }else if( gain == 32 ){
-        return ADPI_GAIN_32;
-    }else if( gain == 64 ){
-        return ADPI_GAIN_64;
-    }else if( gain == 128 ){
-        return ADPI_GAIN_128;
+    if( gain_index <= 7  ){
+        return 0x01 << gain_index;
     }else{
-	printf("gain = %u is not supported.\n", gain);
+	printf("gain_index = %u is not supported.\n", gain_index);
+	printf("Check gain setting\n");
+        return 0x01;
+    }
+}
+
+unsigned int getGainFlag(unsigned short gain_index)
+{
+    if( gain_index <= 7 ){
+        return gain_index << 8;
+    }else{
+	printf("gain_index = %u is not supported.\n", gain_index);
 	printf("Check gain setting\n");
         return ADPI_GAIN_1;
     }
@@ -72,16 +69,19 @@ unsigned short mode;
 unsigned short config;
 unsigned long  data;
 unsigned short num_chs;
-unsigned short gain;
+unsigned short gain_index[4];
 unsigned int   rate;
 
-assign status  to "{head}:STATUS";
-assign mode    to "{head}:MODE";
-assign config  to "{head}:CONFIG";
-assign data    to "{head}:DATA";
-assign num_chs to "{head}:NUMCHS";
-assign gain    to "{head}:SETGAIN";
-assign rate    to "{head}:SETRATE";
+assign status        to "{head}:STATUS";
+assign mode          to "{head}:MODE";
+assign config        to "{head}:CONFIG";
+assign data          to "{head}:DATA";
+assign num_chs       to "{head}:NUMCHS";
+assign gain_index[0] to "{head}:SETGAIN1";
+assign gain_index[1] to "{head}:SETGAIN2";
+assign gain_index[2] to "{head}:SETGAIN3";
+assign gain_index[3] to "{head}:SETGAIN4";
+assign rate          to "{head}:SETRATE";
 
 /* write ch */
 unsigned short mode_w;
@@ -107,6 +107,7 @@ assign vin[3]        to "{head}:V4";
 short ch;
 float measure_delay;
 
+unsigned short gain;
 unsigned int gain_flag;
 float gain_scale;
 
@@ -123,14 +124,12 @@ ss ss1 {
 	    update_status = 1;
 
 	    pvGet(num_chs);
-	    pvGet(gain);
 	    pvGet(rate);
 
-	    gain_flag = getGainFlag(gain);
 	    rate_flag = getRateFlag(rate);
 
 	    config_w = ADPI_VBIAS_DSB | ADPI_BO_DSB | ADPI_POLAR_BI | 
-		       gain_flag | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB | 
+		       ADPI_GAIN_1 | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB |
 		       ADPI_BUF_DSB;
 
 	    mode_w   = ADPI_MODE_POWERDOWN | ADPI_PSW_DSB | ADPI_AMPCM_DSB |
@@ -139,7 +138,6 @@ ss ss1 {
 	    pvPut(config_w);
 	    pvPut(mode_w);
 
-	    gain_scale = ADPI_VREF / (0x800000 * gain) ;
 	    measure_delay = 2.0 * 1.0 / rate + 0.01;
 	    //printf("measure_delay = %.9f\n",measure_delay);
 	    //printf("gain_scale = %.9f\n",gain_scale);
@@ -149,7 +147,16 @@ ss ss1 {
     state init_measure {
         entry {
             //printf("sncAdpi: Init Measure\n");
-	    config_w = (config_w & 0xfff8) | (ch & 0x0007);
+            if(ch <= ADPI_CH_4) {
+	        pvGet(gain_index[ch]);
+                gain = getGain(gain_index[ch]);
+	        gain_flag = getGainFlag(gain_index[ch]);
+	        gain_scale = ADPI_VREF / (0x800000 * gain) ;
+	    }else{
+	        printf("gain setting error on ch%u\n",ch);
+	    }
+
+	    config_w = (config_w & 0xfff8) | gain_flag | (ch & 0x0007);
 	    mode_w = (mode_w & 0x1fff) | ADPI_MODE_SINGLE;
 	    pvPut(config_w, SYNC);
 	    pvPut(mode_w, SYNC);

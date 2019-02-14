@@ -32,8 +32,11 @@ iocInit
 dbpf ET_SASAKI:NUMCHS 4
 
 ### Gain setting. Available gain is following
-### 1, 2, 4, 8, 16, 32, 64, 128
-dbpf ET_SASAKI:SETGAIN 1
+### Gain 1, 2, 4, 8, 16, 32, 64, 128
+dbpf ET_SASAKI:SETGAIN1 "Gain 1"
+dbpf ET_SASAKI:SETGAIN2 "Gain 1"
+dbpf ET_SASAKI:SETGAIN3 "Gain 1"
+dbpf ET_SASAKI:SETGAIN4 "Gain 1"
 
 ### Rate setting. Available rate is following
 ### 500, 250, 125, 62, 50, 39, 33, 19, 17, 16, 12, 10, 8 ,6, 4

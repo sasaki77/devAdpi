@@ -139,7 +139,7 @@ ss ss1 {
 	    pvPut(config_w);
 	    pvPut(mode_w);
 
-	    gain_scale = ADPI_VREF / 0x800000 * gain ;
+	    gain_scale = ADPI_VREF / (0x800000 * gain) ;
 	    measure_delay = 2.0 * 1.0 / rate + 0.01;
 	    //printf("measure_delay = %.9f\n",measure_delay);
 	    //printf("gain_scale = %.9f\n",gain_scale);

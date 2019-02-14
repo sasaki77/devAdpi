@@ -123,6 +123,12 @@ assign gain_index[2] to "{head}:SETGAIN3";
 assign gain_index[3] to "{head}:SETGAIN4";
 assign rate_index    to "{head}:SETRATE";
 
+monitor gain_index[0];
+monitor gain_index[1];
+monitor gain_index[2];
+monitor gain_index[3];
+monitor rate_index;
+
 /* write ch */
 unsigned short mode_w;
 unsigned short config_w;
@@ -164,7 +170,6 @@ ss ss1 {
 	    update_status = 1;
 
 	    pvGet(num_chs);
-	    pvGet(rate_index);
 
 	    rate      = getRate(rate_index);
 	    rate_flag = getRateFlag(rate_index);
@@ -189,7 +194,6 @@ ss ss1 {
         entry {
             //printf("sncAdpi: Init Measure\n");
             if(ch <= ADPI_CH_4) {
-	        pvGet(gain_index[ch]);
                 gain = getGain(gain_index[ch]);
 	        gain_flag = getGainFlag(gain_index[ch]);
 	        gain_scale = ADPI_VREF / (0x800000 * gain) ;

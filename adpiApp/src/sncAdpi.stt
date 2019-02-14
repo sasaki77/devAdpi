@@ -132,10 +132,10 @@ monitor rate_index;
 /* write ch */
 unsigned short mode_w;
 unsigned short config_w;
-unsigned long  update_status;
-unsigned short update_mode;
-unsigned short update_config;
-unsigned long  update_data;
+unsigned long  update_status = 1;
+unsigned short update_mode   = 1;
+unsigned short update_config = 1;
+unsigned long  update_data   = 1;
 float vin[4];
 
 assign mode_w        to "{head}:MODEw";
@@ -150,7 +150,7 @@ assign vin[2]        to "{head}:V3";
 assign vin[3]        to "{head}:V4";
 
 /* internal variable */
-short ch;
+short ch = 0;
 float measure_delay;
 
 unsigned short gain;
@@ -163,12 +163,6 @@ unsigned int rate_flag;
 ss ss1 {
     state init {
         when () {
-	    ch = 0;
-	    update_config = 1;
-	    update_mode   = 1;
-	    update_data   = 1;
-	    update_status = 1;
-
 	    pvGet(num_chs);
 
 	    rate      = getRate(rate_index);

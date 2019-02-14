@@ -8,6 +8,13 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
+# Build an adpi IOC library
+LIBRARY_IOC += devAdpi
+devAdpi_LIBS += $(EPICS_BASE_IOC_LIBS)
+devAdpi_LIBS += asyn
+devAdpi_LIBS += stream
+devAdpi_LIBS += drvAsynSPI
+
 PROD_IOC = adpi
 # adpi.dbd will be created and installed
 DBD += adpi.dbd
@@ -37,6 +44,9 @@ adpi_SRCS_vxWorks += -nil-
 # Add support from base/src/vxWorks if needed
 #adpi_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
 
+# Link in the code from our support library
+adpi_LIBS += devAdpi
+
 # To build SNL programs, SNCSEQ must be defined
 # in the <top>/configure/RELEASE file
 ifneq ($(SNCSEQ),)
@@ -44,7 +54,8 @@ ifneq ($(SNCSEQ),)
     sncAdpi_SNCFLAGS += +r
     adpi_DBD += sncAdpi.dbd
     # A .stt sequence program is *not* pre-processed:
-    adpi_SRCS += sncAdpi.stt
+    devAdpi_SRCS += sncAdpi.stt
+    devAdpi_LIBS += seq pv
     adpi_LIBS += seq pv
 
     # Build sncProgram as a standalone program

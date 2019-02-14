@@ -449,7 +449,6 @@ record( mbbo, "$(head):SETRATE" )
 
 record( mbbo, "$(head):SETGAIN1" )
 {
-    field(INP, "$(head):CONFIG")
     field(DTYP, "Soft Channel")
     field(PINI, "YES")
     field(ZRVL, "0")
@@ -472,7 +471,6 @@ record( mbbo, "$(head):SETGAIN1" )
 
 record( mbbo, "$(head):SETGAIN2" )
 {
-    field(INP, "$(head):CONFIG")
     field(DTYP, "Soft Channel")
     field(PINI, "YES")
     field(ZRVL, "0")
@@ -495,7 +493,6 @@ record( mbbo, "$(head):SETGAIN2" )
 
 record( mbbo, "$(head):SETGAIN3" )
 {
-    field(INP, "$(head):CONFIG")
     field(DTYP, "Soft Channel")
     field(PINI, "YES")
     field(ZRVL, "0")
@@ -518,7 +515,6 @@ record( mbbo, "$(head):SETGAIN3" )
 
 record( mbbo, "$(head):SETGAIN4" )
 {
-    field(INP, "$(head):CONFIG")
     field(DTYP, "Soft Channel")
     field(PINI, "YES")
     field(ZRVL, "0")

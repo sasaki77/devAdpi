@@ -408,16 +408,6 @@ record( longout, "$(head):NUMCHS" )
     field(PINI, "YES")
 }
 
-record( longout, "$(head):SETGAIN" )
-{
-    field(DRVH, "128")
-    field(DRVL, "1")
-    field(HOPR, "128")
-    field(LOPR, "1")
-    field(VAL,  "1")
-    field(PINI, "YES")
-}
-
 record( longout, "$(head):SETRATE" )
 {
     field(DRVH, "500")

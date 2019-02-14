@@ -197,7 +197,7 @@ ss ss1 {
 	        printf("gain setting error on ch%u\n",ch);
 	    }
 
-	    config_w = (config_w & 0xfff8) | gain_flag | (ch & 0x0007);
+	    config_w = (config_w & 0xf8f8) | gain_flag | (ch & 0x0007);
 	    mode_w = (mode_w & 0x1fff) | ADPI_MODE_SINGLE;
 	    pvPut(config_w, SYNC);
 	    pvPut(mode_w, SYNC);
@@ -228,7 +228,7 @@ ss ss1 {
 	    pvGet(data);
             if(ch <= ADPI_CH_4) {
 	        vin[ch] = gain_scale * (long)(data - ADPI_BI_OFFSET);
-	        //printf("v%u = %f\n",ch,v1);
+	        //printf("v%u = %f\n",ch,vin[ch]);
 	        pvPut(vin[ch]);
 	    }else{
 	        printf("measure error on ch%u\n",ch);

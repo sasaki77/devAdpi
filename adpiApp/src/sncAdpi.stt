@@ -90,10 +90,7 @@ unsigned long  update_status;
 unsigned short update_mode;
 unsigned short update_config;
 unsigned long  update_data;
-float v1;
-float v2;
-float v3;
-float v4;
+float vin[4];
 
 assign mode_w        to "{head}:MODEw";
 assign config_w      to "{head}:CONFIGw";
@@ -101,10 +98,10 @@ assign update_status to "{head}:STATUS.PROC";
 assign update_mode   to "{head}:MODE.PROC";
 assign update_config to "{head}:CONFIG.PROC";
 assign update_data   to "{head}:DATA.PROC";
-assign v1            to "{head}:V1";
-assign v2            to "{head}:V2";
-assign v3            to "{head}:V3";
-assign v4            to "{head}:V4";
+assign vin[0]        to "{head}:V1";
+assign vin[1]        to "{head}:V2";
+assign vin[2]        to "{head}:V3";
+assign vin[3]        to "{head}:V4";
 
 /* internal variable */
 short ch;
@@ -181,22 +178,10 @@ ss ss1 {
     state measure {
         entry {
 	    pvGet(data);
-            if(ch == ADPI_CH_1) {
-	        v1 = gain_scale * (long)(data - ADPI_BI_OFFSET);
+            if(ch <= ADPI_CH_4) {
+	        vin[ch] = gain_scale * (long)(data - ADPI_BI_OFFSET);
 	        //printf("v%u = %f\n",ch,v1);
-	        pvPut(v1);
-	    }else if(ch == ADPI_CH_2){
-	        v2 = gain_scale * (long)(data - ADPI_BI_OFFSET);
-	        //printf("v%u = %f\n",ch,v2);
-	        pvPut(v2);
-	    }else if(ch == ADPI_CH_3){
-	        v3 = gain_scale * (long)(data - ADPI_BI_OFFSET);
-	        //printf("v%u = %f\n",ch,v3);
-	        pvPut(v3);
-	    }else if(ch == ADPI_CH_4){
-	        v4 = gain_scale * (long)(data - ADPI_BI_OFFSET);
-	        //printf("v%u = %f\n",ch,v4);
-	        pvPut(v4);
+	        pvPut(vin[ch]);
 	    }else{
 	        printf("measure error on ch%u\n",ch);
 	    }

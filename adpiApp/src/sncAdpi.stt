@@ -179,14 +179,14 @@ ss ss1 {
 	    pvPut(mode_w);
 
 	    measure_delay = 2.0 * 1.0 / rate + 0.01;
-	    //printf("measure_delay = %.9f\n",measure_delay);
-	    //printf("gain_scale = %.9f\n",gain_scale);
+	    DPRINT(("measure_delay = %.9f\n",measure_delay));
+	    DPRINT(("gain_scale = %.9f\n",gain_scale));
 	} state init_measure
     }
 
     state init_measure {
         entry {
-            //printf("sncAdpi: Init Measure\n");
+            DPRINT(("sncAdpi: Init Measure\n"));
             if(ch <= ADPI_CH_4) {
                 gain = getGain(gain_index[ch]);
 	        gain_flag = getGainFlag(gain_index[ch]);
@@ -211,11 +211,11 @@ ss ss1 {
 
     state wait_measure {
 	when ( !(status & ADPI_STS_RDY) ) {
-            //printf("sncAdpi: Measure complete\n");
+            DPRINT(("sncAdpi: Measure complete\n"));
 	    pvPut(update_data, SYNC);
 	} state measure
         when ( delay(measure_delay) ) {
-            //printf("sncAdpi: Measure wait\n");
+            DPRINT(("sncAdpi: Measure wait\n"));
 	    pvPut(update_status, SYNC);
 	    pvGet(status);
         } state wait_measure 
@@ -226,14 +226,14 @@ ss ss1 {
 	    pvGet(data);
             if(ch <= ADPI_CH_4) {
 	        vin[ch] = gain_scale * (long)(data - ADPI_BI_OFFSET);
-	        //printf("v%u = %f\n",ch,vin[ch]);
 	        pvPut(vin[ch]);
+	        DPRINT(("v%u = %f\n",ch,vin[ch]));
 	    }else{
 	        printf("measure error on ch%u\n",ch);
 	    }
         }
         when () {
-            //printf("sncAdpi: End\n");
+            DPRINT(("sncAdpi: End\n"));
 	    ch = (ch >= (num_chs-1))? 0 : ch+1;
         } state init_measure
     }

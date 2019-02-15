@@ -8,6 +8,9 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
+## Debug Flag. Uncomment to enable debug printf
+#USR_CFLAGS = -DADPI_DEBUG
+
 # Build an adpi IOC library
 LIBRARY_IOC += devAdpi
 devAdpi_LIBS += $(EPICS_BASE_IOC_LIBS)

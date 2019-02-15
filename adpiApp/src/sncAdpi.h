@@ -1,3 +1,10 @@
+/* Debug Macro */
+#ifdef ADPI_DEBUG
+#define DPRINT(x) printf x
+#else
+#define DPRINT(x) do {} while (0)
+#endif
+
 /* Status Register */
 #define ADPI_STS_RDY           0x80
 

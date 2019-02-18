@@ -165,20 +165,16 @@ ss ss1 {
         when () {
 	    pvGet(num_chs);
 
-	    rate      = getRate(rate_index);
-	    rate_flag = getRateFlag(rate_index);
-
 	    config_w = ADPI_VBIAS_DSB | ADPI_BO_DSB | ADPI_POLAR_BI | 
 		       ADPI_GAIN_1 | ADPI_REFSEL_EXT1 | ADPI_REFDET_DSB |
 		       ADPI_BUF_DSB;
 
 	    mode_w   = ADPI_MODE_POWERDOWN | ADPI_PSW_DSB | ADPI_AMPCM_DSB |
-		       ADPI_CLK_INT1 | ADPI_CHOP_ENB | rate_flag;
+		       ADPI_CLK_INT1 | ADPI_CHOP_ENB | ADPI_RATE_4;
 
 	    pvPut(config_w);
 	    pvPut(mode_w);
 
-	    measure_delay = 2.0 * 1.0 / rate + 0.01;
 	    DPRINT(("measure_delay = %.9f\n",measure_delay));
 	} state init_measure
     }
@@ -186,6 +182,11 @@ ss ss1 {
     state init_measure {
         entry {
             DPRINT(("sncAdpi: Init Measure\n"));
+
+	    rate      = getRate(rate_index);
+	    rate_flag = getRateFlag(rate_index);
+	    measure_delay = 2.0 * 1.0 / rate + 0.01;
+
             if (ch <= ADPI_CH_4) {
                 gain = getGain(gain_index[ch]);
 	        gain_flag = getGainFlag(gain_index[ch]);
@@ -196,7 +197,7 @@ ss ss1 {
 	    }
 
 	    config_w = (config_w & 0xf8f8) | gain_flag | (ch & 0x0007);
-	    mode_w = (mode_w & 0x1fff) | ADPI_MODE_SINGLE;
+	    mode_w = (mode_w & 0x1ff0) | ADPI_MODE_SINGLE | rate_flag;
 	    pvPut(config_w, SYNC);
 	    pvPut(mode_w, SYNC);
 

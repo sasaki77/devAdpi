@@ -175,7 +175,7 @@ ss ss1 {
 	    pvPut(config_w);
 	    pvPut(mode_w);
 
-	    DPRINT(("measure_delay = %.9f\n",measure_delay));
+	    DPRINT(("measure_delay = %.9f\n", measure_delay));
 	} state init_measure
     }
 
@@ -191,19 +191,20 @@ ss ss1 {
                 gain = getGain(gain_index[ch]);
 	        gain_flag = getGainFlag(gain_index[ch]);
 	        gain_scale = ADPI_VREF / (0x800000 * gain) ;
-	        DPRINT(("gain_scale = %.9f\n",gain_scale));
+	        DPRINT(("gain_scale = %.9f\n", gain_scale));
 	    } else {
-	        printf("gain setting error on ch%u\n",ch);
+	        printf("gain setting error on ch%u\n", ch);
 	    }
 
 	    config_w = (config_w & 0xf8f8) | gain_flag | (ch & 0x0007);
-	    mode_w = (mode_w & 0x1ff0) | ADPI_MODE_SINGLE | rate_flag;
+	    mode_w   = (mode_w & 0x1ff0) | ADPI_MODE_SINGLE | rate_flag;
 	    pvPut(config_w, SYNC);
 	    pvPut(mode_w, SYNC);
 
 	    pvPut(update_config);
 	    pvPut(update_mode);
         }
+
         when (delay(measure_delay)) {
 	    pvPut(update_status, SYNC);
 	    pvGet(status);
@@ -211,11 +212,13 @@ ss ss1 {
     }
 
     state wait_measure {
+	// STS_RDY flag is being high until a measurement completes
 	when (!(status & ADPI_STS_RDY)) {
             DPRINT(("sncAdpi: Measure complete\n"));
 	    pvPut(update_data, SYNC);
 	} state measure
-        when (delay(measure_delay)) {
+
+        when (delay(0.01)) {
             DPRINT(("sncAdpi: Measure wait\n"));
 	    pvPut(update_status, SYNC);
 	    pvGet(status);
@@ -228,11 +231,12 @@ ss ss1 {
             if (ch <= ADPI_CH_4) {
 	        vin[ch] = gain_scale * (long)(data - ADPI_BI_OFFSET);
 	        pvPut(vin[ch]);
-	        DPRINT(("v%u = %f\n",ch,vin[ch]));
+	        DPRINT(("v%u = %f\n", ch, vin[ch]));
 	    } else {
-	        printf("measure error on ch%u\n",ch);
+	        printf("measure error on ch%u\n", ch);
 	    }
         }
+
         when () {
             DPRINT(("sncAdpi: End\n"));
 	    ch = (ch >= (num_chs-1)) ? 0 : ch+1;

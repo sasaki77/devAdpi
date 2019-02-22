@@ -89,3 +89,6 @@
 /* etc */
 #define ADPI_BI_OFFSET         0x800000
 #define ADPI_VREF              5000.0
+#define ADPI_TEMP_VREF         1170.0
+#define ADPI_TEMP_SLOPE        0.81
+#define ADPI_TEMP_OFFSET       273.15

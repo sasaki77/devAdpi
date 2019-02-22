@@ -398,6 +398,11 @@ record( ai, "$(head):V4" )
     field(EGU,  "mV")
 }
 
+record( ai, "$(head):TEMP" )
+{
+    field(EGU,  "deg")
+}
+
 record( longout, "$(head):NUMCHS" )
 {
     field(DRVH, "4")
@@ -533,4 +538,10 @@ record( mbbo, "$(head):SETGAIN4" )
     field(FVST, "Gain 32")
     field(SXST, "Gain 64")
     field(SVST, "Gain 128")
+}
+
+record( bo, "$(head):DSBTEMP" )
+{
+    field(ZNAM, "Enable")
+    field(ONAM, "Disable")
 }

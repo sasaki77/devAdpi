@@ -42,4 +42,7 @@ dbpf ET_SASAKI:SETGAIN4 "Gain 1"
 ### 500 Hz, 250, 125, 62, 50, 39, 33, 19, 17, 16, 12, 10, 8 ,6, 4
 dbpf ET_SASAKI:SETRATE "500 Hz"
 
+### Enable temperature measurement
+dbpf ET_SASAKI:DSBTEMP 0
+
 seq sncAdpi,"head=ET_SASAKI"

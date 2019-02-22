@@ -77,6 +77,8 @@ record( bo, "$(head):RESETw" )
 {
     field(DTYP, "stream")
     field(OUT,  "@ad7794.proto writeReset $(port)")
+    field(ZNAM, "Ready")
+    field(ONAM, "Reset")
 }
 
 record( fanout, "$(head):MODEFO" )

@@ -181,8 +181,6 @@ ss ss1 {
 
 	    pvPut(config_w);
 	    pvPut(mode_w);
-
-	    DPRINT(("measure_delay = %.9f\n", measure_delay));
 	} state init_measure
     }
 
@@ -193,6 +191,8 @@ ss ss1 {
 	    rate      = getRate(rate_index);
 	    rate_flag = getRateFlag(rate_index);
 	    measure_delay = 2.0 * 1.0 / rate + 0.01;
+
+	    DPRINT(("measure_delay = %.9f\n", measure_delay));
 
             if (ch <= ADPI_CH_4) {
                 gain = getGain(gain_index[ch]);
